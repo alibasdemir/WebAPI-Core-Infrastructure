@@ -1,4 +1,4 @@
-using Persistence.Contexts;
+using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<BaseDbContext>();
+builder.Services.AddPersistenceServices();
 
 var app = builder.Build();
 
