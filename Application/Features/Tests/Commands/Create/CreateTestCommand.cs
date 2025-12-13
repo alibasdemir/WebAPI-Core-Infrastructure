@@ -1,4 +1,5 @@
 ﻿using Application.Repositories;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Commands.Create
@@ -18,7 +19,18 @@ namespace Application.Features.Tests.Commands.Create
 
             public async Task<CreateTestResponseDTO> Handle(CreateTestCommand request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                Test test = new()
+                {
+                    Name = request.Name,
+                    CreatedDate = DateTime.UtcNow
+                };
+                await _testRepository.AddAsync(test);
+
+                return new CreateTestResponseDTO
+                {
+                    Id = test.Id,
+                    Name = test.Name
+                };
             }
         }
     }
