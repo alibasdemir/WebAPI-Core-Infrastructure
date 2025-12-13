@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Test\Commands\" />
     <Folder Include="Features\Test\Queries\" />
     <Folder Include="Features\Test\Profiles\" />
   </ItemGroup>
