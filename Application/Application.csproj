@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Test\Queries\" />
-    <Folder Include="Features\Test\Profiles\" />
+    <Folder Include="Features\Tests\Queries\" />
+    <Folder Include="Features\Tests\Profiles\" />
   </ItemGroup>
 
   <ItemGroup>

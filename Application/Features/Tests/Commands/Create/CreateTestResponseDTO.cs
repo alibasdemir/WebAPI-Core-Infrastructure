@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Test.Commands.Create
+﻿namespace Application.Features.Tests.Commands.Create
 {
     public class CreateTestResponseDTO
     {

@@ -1,7 +1,7 @@
 ﻿using Application.Repositories;
 using MediatR;
 
-namespace Application.Features.Test.Commands.Create
+namespace Application.Features.Tests.Commands.Create
 {
     public class CreateTestCommand : IRequest<CreateTestResponseDTO>
     {
