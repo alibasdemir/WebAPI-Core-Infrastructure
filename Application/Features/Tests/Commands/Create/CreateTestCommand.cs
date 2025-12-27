@@ -1,4 +1,5 @@
 ﻿using Application.Repositories;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
@@ -11,26 +12,20 @@ namespace Application.Features.Tests.Commands.Create
         public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, CreateTestResponseDTO>
         {
             private readonly ITestRepository _testRepository;
+            private readonly IMapper _mapper;
 
-            public CreateTestCommandHandler(ITestRepository testRepository)
+            public CreateTestCommandHandler(ITestRepository testRepository, IMapper mapper)
             {
                 _testRepository = testRepository;
+                _mapper = mapper;
             }
 
             public async Task<CreateTestResponseDTO> Handle(CreateTestCommand request, CancellationToken cancellationToken)
             {
-                Test test = new()
-                {
-                    Name = request.Name,
-                    CreatedDate = DateTime.UtcNow
-                };
+                Test test = _mapper.Map<Test>(request);
                 await _testRepository.AddAsync(test);
 
-                return new CreateTestResponseDTO
-                {
-                    Id = test.Id,
-                    Name = test.Name
-                };
+                return _mapper.Map<CreateTestResponseDTO>(test);
             }
         }
     }
