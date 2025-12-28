@@ -1,17 +1,17 @@
-﻿using FluentValidation;
+﻿using Core.CrossCuttingConcerns.Exceptions.Handlers;
 using Microsoft.AspNetCore.Http;
-using System.Net;
-using System.Text.Json;
 
 namespace Core.CrossCuttingConcerns.Exceptions
 {
     public class ExceptionMiddleware
     {
+        private readonly HttpExceptionHandler _httpExceptionHandler;
         private readonly RequestDelegate _next;
 
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
+            _httpExceptionHandler = new HttpExceptionHandler();
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -20,39 +20,17 @@ namespace Core.CrossCuttingConcerns.Exceptions
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                await HandleExceptionAsync(context, ex);
+                await HandleExceptionAsync(context.Response, exception);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpResponse response, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-
-            var statusCode = HttpStatusCode.InternalServerError;
-            var message = "Internal Server Error";
-            var errors = new List<string>();
-
-            if (exception is ValidationException validationException)
-            {
-                statusCode = HttpStatusCode.BadRequest;
-                message = "Validation Error";
-                errors = validationException.Errors
-                    .Select(e => $"{e.PropertyName}: {e.ErrorMessage}")
-                    .ToList();
-            }
-
-            context.Response.StatusCode = (int)statusCode;
-
-            var response = new
-            {
-                StatusCode = (int)statusCode,
-                Message = message,
-                Errors = errors.Any() ? errors : new List<string> { exception.Message }
-            };
-
-            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            response.ContentType = "application/json";
+            _httpExceptionHandler.Response = response;
+            return _httpExceptionHandler.HandleExceptionAsync(exception);
         }
     }
 }
