@@ -1,4 +1,5 @@
 using Application;
+using Core.CrossCuttingConcerns.Exceptions;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,10 @@ builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Exception Middleware
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
