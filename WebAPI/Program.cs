@@ -1,5 +1,5 @@
 using Application;
-using Core.CrossCuttingConcerns.Exceptions;
+using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +18,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 // Exception Middleware
-app.UseMiddleware<ExceptionMiddleware>();
+app.ConfigureCustomExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
