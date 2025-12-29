@@ -1,4 +1,5 @@
 using Application;
+using Core;
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Core.Security.JWT;
 using Core.Security.JWT.Encryption;
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
+builder.Services.AddCoreServices();
 
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 builder.Services
