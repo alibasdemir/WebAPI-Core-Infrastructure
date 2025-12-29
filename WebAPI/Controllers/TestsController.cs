@@ -7,23 +7,11 @@ namespace WebAPI.Controllers
     [ApiController]
     public class TestsController : BaseController
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public TestsController(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateTestCommand command)
         {
-            if (_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
-            {
-                CreateTestResponseDTO response = await _mediator.Send(command);
-                return Ok(response);
-            }
-
-            return Unauthorized("Unauthorized");
+            CreateTestResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }
