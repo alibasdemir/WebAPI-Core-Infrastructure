@@ -14,6 +14,7 @@ namespace Persistence
             // services.AddScoped<IYourRepository, YourRepository>();
             services.AddDbContext<BaseDbContext>();
             services.AddScoped<ITestRepository, TestRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }
