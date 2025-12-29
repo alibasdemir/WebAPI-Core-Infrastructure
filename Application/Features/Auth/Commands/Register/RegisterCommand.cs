@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Security.Entities;
+using Core.Security.HashingSalting;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.Register
@@ -28,11 +29,13 @@ namespace Application.Features.Auth.Commands.Register
             {
                 User user = _mapper.Map<User>(request);
 
-                user.PasswordHash = null;
-                user.PasswordSalt = null;
+                byte[] passwordHash, passwordSalt;
+                HashingSaltingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+                user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
 
                 await _userRepository.AddAsync(user);
             }
+        }
     }
-}
 }
