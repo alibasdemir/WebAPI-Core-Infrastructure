@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest
+    public class RegisterCommand : IRequest<RegisterResponseDTO>
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -14,7 +14,7 @@ namespace Application.Features.Auth.Commands.Register
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
+        public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponseDTO>
         {
             private IUserRepository _userRepository;
             private IMapper _mapper;
@@ -25,7 +25,7 @@ namespace Application.Features.Auth.Commands.Register
                 _mapper = mapper;
             }
 
-            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+            public async Task<RegisterResponseDTO> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
                 User user = _mapper.Map<User>(request);
 
@@ -35,6 +35,8 @@ namespace Application.Features.Auth.Commands.Register
                 user.PasswordHash = passwordHash;
 
                 await _userRepository.AddAsync(user);
+                RegisterResponseDTO registerResponse = _mapper.Map<RegisterResponseDTO>(user);
+                return registerResponse;
             }
         }
     }
