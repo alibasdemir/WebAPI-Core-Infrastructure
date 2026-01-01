@@ -9,6 +9,7 @@ namespace Application.Features.Tests.Commands.Create
     public class CreateTestCommand : IRequest<CreateTestResponseDTO>, ISecuredRequest
     {
         public string Name { get; set; }
+        public string[] Roles => ["test.add"];
 
         public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, CreateTestResponseDTO>
         {
