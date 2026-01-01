@@ -1,11 +1,12 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Commands.Create
 {
-    public class CreateTestCommand : IRequest<CreateTestResponseDTO>
+    public class CreateTestCommand : IRequest<CreateTestResponseDTO>, ISecuredRequest
     {
         public string Name { get; set; }
 
