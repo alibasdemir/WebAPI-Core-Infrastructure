@@ -15,6 +15,8 @@ namespace Persistence
             services.AddDbContext<BaseDbContext>();
             services.AddScoped<ITestRepository, TestRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+            services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
             return services;
         }
     }
