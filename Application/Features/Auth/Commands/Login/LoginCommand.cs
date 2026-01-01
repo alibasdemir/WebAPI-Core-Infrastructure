@@ -1,9 +1,11 @@
 ﻿using Application.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using Core.Pagination;
 using Core.Security.Entities;
 using Core.Security.HashingSalting;
 using Core.Security.JWT;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.Login
 {
@@ -16,11 +18,13 @@ namespace Application.Features.Auth.Commands.Login
         {
             private readonly IUserRepository _userRepository;
             private readonly IJwtHelper _jwtHelper;
+            private readonly IUserOperationClaimRepository _userOperationClaimRepository;
 
-            public LoginCommandHandler(IUserRepository userRepository, IJwtHelper jwtHelper)
+            public LoginCommandHandler(IUserRepository userRepository, IJwtHelper jwtHelper, IUserOperationClaimRepository userOperationClaimRepository)
             {
                 _userRepository = userRepository;
                 _jwtHelper = jwtHelper;
+                _userOperationClaimRepository = userOperationClaimRepository;
             }
             public async Task<AccessToken> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
@@ -34,7 +38,11 @@ namespace Application.Features.Auth.Commands.Login
                 if (!isPasswordMatch)
                     throw new BusinessException("Login failed");
 
-                return _jwtHelper.CreateToken(user);
+                // Get user operation claims (roles/permissions)
+                IPaginate<UserOperationClaim> userOperationClaimsPaginate = await _userOperationClaimRepository.GetListAsync(i => i.UserId == user.Id, include: i => i.Include(i => i.OperationClaim));
+                List<UserOperationClaim> userOperationClaims = userOperationClaimsPaginate.Items.ToList();
+
+                return _jwtHelper.CreateToken(user, userOperationClaims.Select(i => i.OperationClaim).ToList());
             }
         }
     }
