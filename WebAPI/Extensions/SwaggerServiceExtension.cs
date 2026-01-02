@@ -71,7 +71,8 @@ namespace WebAPI.Extensions
             app.UseSwaggerUI(opt =>
             {
                 opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Modular API v1");
-                opt.DocExpansion(DocExpansion.None);
+                // Collapses all API endpoint groups by default on page load (improves readability for large APIs)
+                //opt.DocExpansion(DocExpansion.None);
             });
 
             return app;

@@ -24,22 +24,34 @@ namespace Core.Application.Pipelines.Authorization
             if (request.Roles.Length == 0)
                 return await next();
 
+            // Get user roles
             List<string>? userRoleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
 
-            if (userRoleClaims == null)
-                throw new AuthorizationException("You are not authenticated.");
+            if (userRoleClaims == null || userRoleClaims.Count == 0)
+                throw new AuthorizationException("You are not authenticated - You don't have any roles assigned.");
 
-            bool isNotMatchedAUserRoleClaimWithRequestRoles = string.IsNullOrEmpty(
-                userRoleClaims.FirstOrDefault(
-                    userRoleClaim => 
-                    userRoleClaim.Equals(GeneralOperationClaims.Admin, StringComparison.OrdinalIgnoreCase) 
-                    ||
-                    request.Roles.Any(role => role.Equals(userRoleClaim, StringComparison.OrdinalIgnoreCase)))
+            // Check if user is admin (bypass other role checks)
+            bool isAdmin = userRoleClaims.Any(role =>
+                role.Equals(GeneralOperationClaims.Admin, StringComparison.OrdinalIgnoreCase)
             );
 
-            if (isNotMatchedAUserRoleClaimWithRequestRoles)
-                throw new AuthorizationException("You are not authorized.");
+            if (isAdmin)
+                return await next();
 
+            // 5. Check if user has any of the required roles
+            bool hasRequiredRole = request.Roles.Any(requiredRole =>
+                userRoleClaims.Any(userRole =>
+                    userRole.Equals(requiredRole, StringComparison.OrdinalIgnoreCase)
+                )
+            );
+
+            if (!hasRequiredRole)
+            {
+                string requiredRoles = string.Join(", ", request.Roles);
+                throw new AuthorizationException($"You need one of these roles: {requiredRoles}");
+            }
+
+            // 6. User is authorized, proceed to next behavior
             TResponse response = await next();
             return response;
         }
