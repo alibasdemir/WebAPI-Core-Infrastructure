@@ -5,6 +5,7 @@ using Application.Features.Tests.Commands.Update;
 using Application.Features.Tests.Queries.GetById;
 using Application.Features.Tests.Queries.GetList;
 using Application.Features.Tests.Queries.Search;
+using Core.Pagination.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,9 +65,9 @@ namespace WebAPI.Controllers
 
         // GET endpoint (simple list with default ordering)
         [HttpGet]
-        public async Task<IActionResult> GetList([FromQuery] int index = 0, [FromQuery] int size = 10)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
-            GetListTestQuery query = new() { Index = index, Size = size };
+            GetListTestQuery query = new() { PageRequest = pageRequest };
             GetListTestResponseDTO response = await _mediator.Send(query);
             return Ok(response);
         }

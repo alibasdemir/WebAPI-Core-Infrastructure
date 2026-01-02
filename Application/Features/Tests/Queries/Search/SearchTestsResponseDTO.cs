@@ -1,14 +1,9 @@
-﻿namespace Application.Features.Tests.Queries.Search
+﻿using Core.Pagination.Responses;
+
+namespace Application.Features.Tests.Queries.Search
 {
-    public class SearchTestsResponseDTO
+    public class SearchTestsResponseDTO : GetListResponse<SearchTestItemDTO>
     {
-        public int Index { get; set; }
-        public int Size { get; set; }
-        public int Count { get; set; }
-        public int Pages { get; set; }
-        public bool HasPrevious { get; set; }
-        public bool HasNext { get; set; }
-        public IList<SearchTestItemDTO> Items { get; set; }
     }
 
     public class SearchTestItemDTO

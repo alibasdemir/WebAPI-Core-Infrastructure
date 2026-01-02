@@ -1,14 +1,9 @@
-﻿namespace Application.Features.Auth.Queries.GetListUser
+﻿using Core.Pagination.Responses;
+
+namespace Application.Features.Auth.Queries.GetListUser
 {
-    public class GetListUserResponseDTO
+    public class GetListUserResponseDTO : GetListResponse<UserItemDTO>
     {
-        public int Index { get; set; }
-        public int Size { get; set; }
-        public int Count { get; set; }
-        public int Pages { get; set; }
-        public bool HasPrevious { get; set; }
-        public bool HasNext { get; set; }
-        public IList<UserItemDTO> Items { get; set; }
     }
 
     public class UserItemDTO

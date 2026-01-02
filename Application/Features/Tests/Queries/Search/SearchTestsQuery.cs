@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Pagination;
+using Core.Pagination.Requests;
 using Domain.Entities;
 using MediatR;
 
@@ -9,8 +10,7 @@ namespace Application.Features.Tests.Queries.Search
     public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>
     {
         public string? SearchTerm { get; set; }
-        public int Index { get; set; } = 0;
-        public int Size { get; set; } = 10;
+        public PageRequest PageRequest { get; set; } = new();
 
         public class SearchTestsQueryHandler : IRequestHandler<SearchTestsQuery, SearchTestsResponseDTO>
         {
@@ -30,8 +30,8 @@ namespace Application.Features.Tests.Queries.Search
                                    (string.IsNullOrEmpty(request.SearchTerm) ||
                                     t.Name.Contains(request.SearchTerm)),
                     orderBy: query => query.OrderByDescending(t => t.CreatedDate),
-                    index: request.Index,
-                    size: request.Size,
+                    index: request.PageRequest.Index,
+                    size: request.PageRequest.Size,
                     enableTracking: false,
                     cancellationToken: cancellationToken
                 );

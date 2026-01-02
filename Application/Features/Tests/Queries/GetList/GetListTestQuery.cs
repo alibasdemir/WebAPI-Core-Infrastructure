@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Dynamic;
 using Core.Pagination;
+using Core.Pagination.Requests;
 using Domain.Entities;
 using MediatR;
 
@@ -9,8 +10,7 @@ namespace Application.Features.Tests.Queries.GetList
 {
     public class GetListTestQuery : IRequest<GetListTestResponseDTO>
     {
-        public int Index { get; set; } = 0;
-        public int Size { get; set; } = 10;
+        public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }
 
         public class GetListTestQueryHandler : IRequestHandler<GetListTestQuery, GetListTestResponseDTO>
@@ -34,8 +34,8 @@ namespace Application.Features.Tests.Queries.GetList
                     tests = await _testRepository.GetListByDynamicAsync(
                         dynamic: request.Dynamic,
                         predicate: t => !t.IsDeleted,
-                        index: request.Index,
-                        size: request.Size,
+                        index: request.PageRequest.Index,
+                        size: request.PageRequest.Size,
                         enableTracking: false,
                         cancellationToken: cancellationToken
                     );
@@ -46,8 +46,8 @@ namespace Application.Features.Tests.Queries.GetList
                     tests = await _testRepository.GetListAsync(
                         predicate: t => !t.IsDeleted,
                         orderBy: query => query.OrderByDescending(t => t.CreatedDate),
-                        index: request.Index,
-                        size: request.Size,
+                        index: request.PageRequest.Index,
+                        size: request.PageRequest.Size,
                         enableTracking: false,
                         cancellationToken: cancellationToken
                     );

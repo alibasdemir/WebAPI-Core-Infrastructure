@@ -6,6 +6,7 @@ using Application.Features.UserOperationClaims.Queries.GetByUserId;
 using Application.Features.UserOperationClaims.Queries.GetList;
 using Application.Features.UserOperationClaims.Queries.GetUsersByOperationClaimId;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Pagination.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,9 +62,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetList([FromQuery] int index = 0, [FromQuery] int size = 10)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
-            GetListUserOperationClaimQuery query = new() { Index = index, Size = size };
+            GetListUserOperationClaimQuery query = new() { PageRequest = pageRequest };
             GetListUserOperationClaimResponseDTO response = await _mediator.Send(query);
             return Ok(response);
         }
