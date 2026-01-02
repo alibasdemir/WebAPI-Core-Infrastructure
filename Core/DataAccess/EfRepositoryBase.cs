@@ -181,5 +181,27 @@ namespace Core.DataAccess
             return queryable.ToPaginate(index, size);
         }
         #endregion
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? predicate = null, bool enableTracking = false, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> queryable = Query();
+            if (!enableTracking)
+                queryable = queryable.AsNoTracking();
+
+            if (predicate != null)
+                return await queryable.AnyAsync(predicate, cancellationToken);
+
+            return await queryable.AnyAsync(cancellationToken);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> queryable = Query().AsNoTracking();
+
+            if (predicate != null)
+                return await queryable.CountAsync(predicate, cancellationToken);
+
+            return await queryable.CountAsync(cancellationToken);
+        }
     }
 }

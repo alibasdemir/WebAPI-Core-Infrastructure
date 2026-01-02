@@ -42,5 +42,22 @@ namespace Core.DataAccess
             bool enableTracking = true,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// Checks if any entity exists matching the predicate
+        /// </summary>
+        Task<bool> AnyAsync(
+            Expression<Func<T, bool>>? predicate = null,
+            bool enableTracking = false,
+            CancellationToken cancellationToken = default
+        );
+
+        /// <summary>
+        /// Gets the count of entities matching the predicate
+        /// </summary>
+        Task<int> CountAsync(
+            Expression<Func<T, bool>>? predicate = null,
+            CancellationToken cancellationToken = default
+        );
     }
 }

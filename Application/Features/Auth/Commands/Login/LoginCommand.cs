@@ -1,9 +1,7 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Auth.Rules;
 using Application.Services.AuthService;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Security.Entities;
-using Core.Security.HashingSalting;
 using Core.Security.JWT;
 using MediatR;
 
@@ -16,30 +14,26 @@ namespace Application.Features.Auth.Commands.Login
 
         public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponseDTO>
         {
-            private readonly IUserRepository _userRepository;
             private readonly IAuthService _authService;
             private readonly IMapper _mapper;
+            private readonly AuthBusinessRules _authBusinessRules;
 
-            public LoginCommandHandler(IUserRepository userRepository, IAuthService authService, IMapper mapper)
+            public LoginCommandHandler(IAuthService authService, IMapper mapper, AuthBusinessRules authBusinessRules)
             {
-                _userRepository = userRepository;
                 _authService = authService;
                 _mapper = mapper;
+                _authBusinessRules = authBusinessRules;
             }
             public async Task<LoginResponseDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                User? user = await _userRepository.GetAsync(u => u.Email == request.Email);
+                // Business rules
+                User? user = await _authBusinessRules.UserShouldExistWhenLogin(request.Email);
+                _authBusinessRules.PasswordShouldBeCorrect(request.Password, user.PasswordHash, user.PasswordSalt);
 
-                if (user is null)
-                    throw new BusinessException("Login failed");
-
-                bool isPasswordMatch = HashingSaltingHelper.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt);
-
-                if (!isPasswordMatch)
-                    throw new BusinessException("Login failed");
-
+                // Create token
                 AccessToken createdAccessToken = await _authService.CreateAccessToken(user);
 
+                // Map response
                 LoginResponseDTO loginResponse = _mapper.Map<LoginResponseDTO>(createdAccessToken);
 
                 // for manual
