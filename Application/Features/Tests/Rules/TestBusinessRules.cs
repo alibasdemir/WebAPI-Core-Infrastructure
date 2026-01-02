@@ -1,6 +1,5 @@
 ﻿using Application.Repositories;
 using Core.Application.Rules;
-using Core.Security.Entities;
 using Domain.Entities;
 
 namespace Application.Features.Tests.Rules

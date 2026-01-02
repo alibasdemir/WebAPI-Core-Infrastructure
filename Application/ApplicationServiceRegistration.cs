@@ -1,5 +1,7 @@
 ﻿using Application.Features.Auth.Rules;
+using Application.Features.OperationClaims.Rules;
 using Application.Features.Tests.Rules;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Services.AuthService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
@@ -25,6 +27,8 @@ namespace Application
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<AuthBusinessRules>();
             services.AddScoped<TestBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();  // ← Ekleyin
 
             return services;
         }
