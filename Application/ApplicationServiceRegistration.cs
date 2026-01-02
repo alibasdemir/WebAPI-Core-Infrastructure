@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Rules;
+using Application.Features.Tests.Rules;
 using Application.Services.AuthService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
@@ -23,6 +24,7 @@ namespace Application
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<AuthBusinessRules>();
+            services.AddScoped<TestBusinessRules>();
 
             return services;
         }
