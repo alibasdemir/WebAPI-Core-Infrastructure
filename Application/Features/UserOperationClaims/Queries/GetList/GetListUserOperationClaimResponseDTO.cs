@@ -1,14 +1,9 @@
-﻿namespace Application.Features.UserOperationClaims.Queries.GetList
+﻿using Core.Pagination.Responses;
+
+namespace Application.Features.UserOperationClaims.Queries.GetList
 {
-    public class GetListUserOperationClaimResponseDTO
+    public class GetListUserOperationClaimResponseDTO : GetListResponse<UserOperationClaimListItemDTO>
     {
-        public int Index { get; set; }
-        public int Size { get; set; }
-        public int Count { get; set; }
-        public int Pages { get; set; }
-        public bool HasPrevious { get; set; }
-        public bool HasNext { get; set; }
-        public IList<UserOperationClaimListItemDTO> Items { get; set; }
     }
 
     public class UserOperationClaimListItemDTO

@@ -3,6 +3,7 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
 using Core.Pagination;
+using Core.Pagination.Requests;
 using Core.Security.Entities;
 using MediatR;
 
@@ -11,8 +12,7 @@ namespace Application.Features.Auth.Queries.SearchUsers
     public class SearchUsersQuery : IRequest<SearchUsersResponseDTO>, ISecuredRequest
     {
         public string? SearchTerm { get; set; }
-        public int Index { get; set; } = 0;
-        public int Size { get; set; } = 10;
+        public PageRequest PageRequest { get; set; } = new();
         public string[] Roles => [GeneralOperationClaims.Admin];
 
         public class SearchUsersQueryHandler : IRequestHandler<SearchUsersQuery, SearchUsersResponseDTO>
@@ -36,8 +36,8 @@ namespace Application.Features.Auth.Queries.SearchUsers
                                     u.LastName.Contains(request.SearchTerm) ||
                                     u.Email.Contains(request.SearchTerm)),
                     orderBy: query => query.OrderByDescending(u => u.CreatedDate),
-                    index: request.Index,
-                    size: request.Size,
+                    index: request.PageRequest.Index,
+                    size: request.PageRequest.Size,
                     enableTracking: false,
                     cancellationToken: cancellationToken
                 );

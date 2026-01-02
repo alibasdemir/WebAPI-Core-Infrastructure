@@ -4,6 +4,7 @@ using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
 using Core.Dynamic;
 using Core.Pagination;
+using Core.Pagination.Requests;
 using Core.Security.Entities;
 using MediatR;
 
@@ -11,8 +12,7 @@ namespace Application.Features.OperationClaims.Queries.GetList
 {
     public class GetListOperationClaimQuery : IRequest<GetListOperationClaimResponseDTO>, ISecuredRequest
     {
-        public int Index { get; set; } = 0;
-        public int Size { get; set; } = 10;
+        public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }
         public string[] Roles => [GeneralOperationClaims.Admin];
 
@@ -36,8 +36,8 @@ namespace Application.Features.OperationClaims.Queries.GetList
                     operationClaims = await _operationClaimRepository.GetListByDynamicAsync(
                         dynamic: request.Dynamic,
                         predicate: oc => !oc.IsDeleted,
-                        index: request.Index,
-                        size: request.Size,
+                        index: request.PageRequest.Index,
+                        size: request.PageRequest.Size,
                         enableTracking: false,
                         cancellationToken: cancellationToken
                     );
@@ -47,8 +47,8 @@ namespace Application.Features.OperationClaims.Queries.GetList
                     operationClaims = await _operationClaimRepository.GetListAsync(
                         predicate: oc => !oc.IsDeleted,
                         orderBy: query => query.OrderBy(oc => oc.Name),
-                        index: request.Index,
-                        size: request.Size,
+                        index: request.PageRequest.Index,
+                        size: request.PageRequest.Size,
                         enableTracking: false,
                         cancellationToken: cancellationToken
                     );

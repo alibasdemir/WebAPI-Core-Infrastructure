@@ -1,16 +1,10 @@
 ﻿using Core.Pagination;
+using Core.Pagination.Responses;
 
 namespace Application.Features.Auth.Queries.SearchUsers
 {
-    public class SearchUsersResponseDTO
+    public class SearchUsersResponseDTO : GetListResponse<SearchUserItemDTO>
     {
-        public int Index { get; set; }
-        public int Size { get; set; }
-        public int Count { get; set; }
-        public int Pages { get; set; }
-        public bool HasPrevious { get; set; }
-        public bool HasNext { get; set; }
-        public IList<SearchUserItemDTO> Items { get; set; }
     }
 
     public class SearchUserItemDTO

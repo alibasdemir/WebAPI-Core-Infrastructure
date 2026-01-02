@@ -4,6 +4,7 @@ using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
 using Core.Dynamic;
 using Core.Pagination;
+using Core.Pagination.Requests;
 using Core.Security.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,7 @@ namespace Application.Features.UserOperationClaims.Queries.GetList
 {
     public class GetListUserOperationClaimQuery : IRequest<GetListUserOperationClaimResponseDTO>, ISecuredRequest
     {
-        public int Index { get; set; } = 0;
-        public int Size { get; set; } = 10;
+        public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }
         public string[] Roles => [GeneralOperationClaims.Admin];
 
@@ -40,8 +40,8 @@ namespace Application.Features.UserOperationClaims.Queries.GetList
                         dynamic: request.Dynamic,
                         predicate: uoc => !uoc.IsDeleted,
                         include: query => query.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim),
-                        index: request.Index,
-                        size: request.Size,
+                        index: request.PageRequest.Index,
+                        size: request.PageRequest.Size,
                         enableTracking: false,
                         cancellationToken: cancellationToken
                     );
@@ -52,8 +52,8 @@ namespace Application.Features.UserOperationClaims.Queries.GetList
                         predicate: uoc => !uoc.IsDeleted,
                         include: query => query.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim),
                         orderBy: query => query.OrderByDescending(uoc => uoc.CreatedDate),
-                        index: request.Index,
-                        size: request.Size,
+                        index: request.PageRequest.Index,
+                        size: request.PageRequest.Size,
                         enableTracking: false,
                         cancellationToken: cancellationToken
                     );
