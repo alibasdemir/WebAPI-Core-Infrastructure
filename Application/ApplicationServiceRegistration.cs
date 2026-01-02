@@ -1,4 +1,5 @@
-﻿using Core.Application.Pipelines.Authorization;
+﻿using Application.Services.AuthService;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,8 @@ namespace Application
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
