@@ -1,5 +1,16 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Application.Features.Auth.Commands.ChangePassword;
+using Application.Features.Auth.Commands.DeleteUser;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.SoftDeleteUser;
+using Application.Features.Auth.Commands.UpdateUser;
+using Application.Features.Auth.Queries.GetById;
+using Application.Features.Auth.Queries.GetByIdUser;
+using Application.Features.Auth.Queries.GetCurrentUser;
+using Application.Features.Auth.Queries.GetListUser;
+using Application.Features.Auth.Queries.SearchUsers;
+using Core.Application.Pipelines.Authorization.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -8,6 +19,8 @@ namespace WebAPI.Controllers
     [ApiController]         
     public class AuthsController : BaseController
     {
+        #region Commands
+
         [HttpPost("Register")]
         public async Task<IActionResult> Add([FromBody] RegisterCommand registerCommand)
         {
@@ -21,5 +34,79 @@ namespace WebAPI.Controllers
             var loginResponse = await _mediator.Send(loginCommand);
             return Ok(loginResponse);
         }
+
+        [HttpPut("Update")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
+        {
+            UpdateUserResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("Delete/{id}")]
+        [Authorize(Roles = GeneralOperationClaims.Admin)]
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        {
+            DeleteUserCommand command = new() { Id = id };
+            DeleteUserResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("SoftDelete/{id}")]
+        [Authorize(Roles = GeneralOperationClaims.Admin)]
+        public async Task<IActionResult> SoftDeleteUser([FromRoute] int id)
+        {
+            SoftDeleteUserCommand command = new() { Id = id };
+            SoftDeleteUserResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("ChangePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+        {
+            ChangePasswordResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        #endregion
+
+        #region Queries
+
+        [HttpGet("GetById/{id}")]
+        [Authorize(Roles = GeneralOperationClaims.Admin)]
+        public async Task<IActionResult> GetByIdUser([FromRoute] int id)
+        {
+            GetByIdUserQuery query = new() { Id = id };
+            GetByIdUserResponseDTO response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("GetList")]
+        [Authorize(Roles = GeneralOperationClaims.Admin)]
+        public async Task<IActionResult> GetListUser([FromQuery] GetListUserQuery query)
+        {
+            GetListUserResponseDTO response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("GetCurrentUser")]
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            GetCurrentUserQuery query = new();
+            GetCurrentUserResponseDTO response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("Search")]
+        [Authorize(Roles = GeneralOperationClaims.Admin)]
+        public async Task<IActionResult> SearchUsers([FromQuery] SearchUsersQuery query)
+        {
+            SearchUsersResponseDTO response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        #endregion
     }
 }

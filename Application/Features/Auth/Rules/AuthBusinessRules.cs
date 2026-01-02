@@ -92,5 +92,10 @@ namespace Application.Features.Auth.Rules
         {
             CheckEntityNotDeleted(user, "User account has been deleted.");
         }
+
+        public void CheckEntityExists(User? user)
+        {
+            CheckEntityExists(user, "User not found.");
+        }
     }
 }
