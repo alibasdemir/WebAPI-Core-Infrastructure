@@ -1,6 +1,7 @@
 ﻿using Core.Security.Entities;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Persistence.Contexts
 {
@@ -19,7 +20,32 @@ namespace Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("Users");
+            // Apply all entity configurations from the current assembly (including seed data)
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            // Fluent API configurations for User
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("Users");
+                entity.HasKey(u => u.Id);
+
+                entity.Property(u => u.Email)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(u => u.UserName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                // Unique indexes to prevent duplicate email and username
+                entity.HasIndex(u => u.Email)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Users_Email");
+
+                entity.HasIndex(u => u.UserName)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Users_Username");
+            });
 
             // Fluent API configurations for OperationClaim
             modelBuilder.Entity<OperationClaim>(entity =>
