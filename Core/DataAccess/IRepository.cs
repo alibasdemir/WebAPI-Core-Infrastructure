@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 
 namespace Core.DataAccess
 {
-    public interface IRepository<T>
+    public interface IRepository<T> : IQuery<T>
+        where T : Entity
     {
         T? Get(
             Expression<Func<T, bool>> predicate,

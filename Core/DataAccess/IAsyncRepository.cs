@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 
 namespace Core.DataAccess
 {
-    public interface IAsyncRepository<T>
+    public interface IAsyncRepository<T> : IQuery<T>
+        where T : Entity
     {
         Task<T?> GetAsync(
             Expression<Func<T, bool>> predicate,
