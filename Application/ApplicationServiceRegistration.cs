@@ -1,4 +1,5 @@
-﻿using Application.Services.AuthService;
+﻿using Application.Features.Auth.Rules;
+using Application.Services.AuthService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using FluentValidation;
@@ -21,6 +22,7 @@ namespace Application
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<AuthBusinessRules>();
 
             return services;
         }
