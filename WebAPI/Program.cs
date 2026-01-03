@@ -3,6 +3,7 @@ using Core;
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Core.Security.JWT;
 using Core.Security.JWT.Encryption;
+using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
@@ -20,6 +21,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddCoreServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 builder.Services
