@@ -97,5 +97,72 @@ namespace Application.Features.Auth.Rules
         {
             CheckEntityExists(user, "User not found.");
         }
+
+        // Email Verification Rules
+        public void EmailShouldBeVerified(bool isEmailVerified)
+        {
+            CheckBusinessRule(isEmailVerified, "Please verify your email address before logging in. Check your inbox for the verification link.");
+        }
+
+        public void VerificationTokenShouldBeValid(string token)
+        {
+            CheckBusinessRule(!string.IsNullOrWhiteSpace(token), "Invalid verification token.");
+            CheckBusinessRule(token.Length >= 32, "Invalid verification token format.");
+        }
+
+        public void UserShouldExistForVerification(User? user)
+        {
+            CheckEntityExistsForBusiness(user, "Invalid or expired verification token.");
+        }
+
+        public void EmailVerificationTokenShouldNotBeExpired(DateTime? tokenExpires)
+        {
+            CheckBusinessRule(tokenExpires.HasValue, "Verification token has expired.");
+            CheckBusinessRule(tokenExpires.Value > DateTime.UtcNow, "Verification token has expired. Please request a new one.");
+        }
+
+        public void EmailShouldNotBeAlreadyVerified(bool isEmailVerified)
+        {
+            CheckBusinessRule(!isEmailVerified, "Email is already verified.");
+        }
+
+        public async Task<User> UserShouldExistForResendVerification(string email)
+        {
+            User? user = await _userRepository.GetAsync(u => u.Email == email);
+            CheckEntityExistsForBusiness(user, "No account found with this email address.");
+            CheckEntityNotDeleted(user!, "User account has been deleted.");
+            return user!;
+        }
+
+        // Password Reset Rules
+        public async Task<User> UserShouldExistWhenRequestingPasswordReset(string email)
+        {
+            User? user = await _userRepository.GetAsync(u => u.Email == email);
+            CheckEntityExistsForBusiness(user, "No account found with this email address.");
+            CheckEntityNotDeleted(user!, "User account has been deleted.");
+            return user!;
+        }
+
+        public void ResetTokenShouldBeValid(string token)
+        {
+            CheckBusinessRule(!string.IsNullOrWhiteSpace(token), "Invalid reset token.");
+            CheckBusinessRule(token.Length >= 32, "Invalid reset token format.");
+        }
+
+        public void UserShouldExistForPasswordReset(User? user)
+        {
+            CheckEntityExistsForBusiness(user, "Invalid or expired reset token.");
+        }
+
+        public void PasswordResetTokenShouldNotBeExpired(DateTime? tokenExpires)
+        {
+            CheckBusinessRule(tokenExpires.HasValue, "Reset token has expired.");
+            CheckBusinessRule(tokenExpires.Value > DateTime.UtcNow, "Reset token has expired. Please request a new one.");
+        }
+
+        public void PasswordsShouldMatch(string password, string confirmPassword)
+        {
+            CheckBusinessRule(password == confirmPassword, "Passwords do not match.");
+        }
     }
 }
