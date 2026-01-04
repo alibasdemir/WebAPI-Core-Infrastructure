@@ -1,9 +1,13 @@
 ﻿using Application.Features.Auth.Commands.ChangePassword;
 using Application.Features.Auth.Commands.DeleteUser;
+using Application.Features.Auth.Commands.ForgotPassword;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.ResendVerificationEmail;
+using Application.Features.Auth.Commands.ResetPassword;
 using Application.Features.Auth.Commands.SoftDeleteUser;
 using Application.Features.Auth.Commands.UpdateUser;
+using Application.Features.Auth.Commands.VerifyEmail;
 using Application.Features.Auth.Queries.GetById;
 using Application.Features.Auth.Queries.GetByIdUser;
 using Application.Features.Auth.Queries.GetCurrentUser;
@@ -33,6 +37,34 @@ namespace WebAPI.Controllers
         {
             var loginResponse = await _mediator.Send(loginCommand);
             return Ok(loginResponse);
+        }
+
+        [HttpPost("VerifyEmail")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailCommand command)
+        {
+            VerifyEmailResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("ResendVerificationEmail")]
+        public async Task<IActionResult> ResendVerificationEmail([FromBody] ResendVerificationEmailCommand command)
+        {
+            ResendVerificationEmailResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        {
+            ForgotPasswordResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            ResetPasswordResponseDTO response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpPut("Update")]

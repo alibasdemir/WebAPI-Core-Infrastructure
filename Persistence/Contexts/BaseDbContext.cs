@@ -37,6 +37,28 @@ namespace Persistence.Contexts
                     .IsRequired()
                     .HasMaxLength(50);
 
+                // Email verification properties
+                entity.Property(u => u.IsEmailVerified)
+                    .IsRequired()
+                    .HasDefaultValue(false);
+
+                entity.Property(u => u.EmailVerificationToken)
+                    .HasMaxLength(500);
+
+                entity.Property(u => u.EmailVerificationTokenExpires);
+
+                // Password reset properties
+                entity.Property(u => u.PasswordResetToken)
+                    .HasMaxLength(500);
+
+                entity.Property(u => u.PasswordResetTokenExpires);
+
+                // Security tracking properties
+                entity.Property(u => u.LastLoginDate);
+
+                entity.Property(u => u.LastLoginIp)
+                    .HasMaxLength(45); // IPv6 max length
+
                 // Unique indexes to prevent duplicate email and username
                 entity.HasIndex(u => u.Email)
                     .IsUnique()
@@ -45,6 +67,13 @@ namespace Persistence.Contexts
                 entity.HasIndex(u => u.UserName)
                     .IsUnique()
                     .HasDatabaseName("IX_Users_Username");
+
+                // Index for token lookups (performance optimization)
+                entity.HasIndex(u => u.EmailVerificationToken)
+                    .HasDatabaseName("IX_Users_EmailVerificationToken");
+
+                entity.HasIndex(u => u.PasswordResetToken)
+                    .HasDatabaseName("IX_Users_PasswordResetToken");
             });
 
             // Fluent API configurations for OperationClaim

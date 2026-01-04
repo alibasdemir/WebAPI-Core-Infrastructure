@@ -20,7 +20,7 @@ builder.Services.AddSwaggerWithJwtAuth();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
-builder.Services.AddCoreServices();
+builder.Services.AddCoreServices(builder.Configuration); 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
