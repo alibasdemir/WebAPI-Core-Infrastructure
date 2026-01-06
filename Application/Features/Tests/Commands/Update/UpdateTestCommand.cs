@@ -3,12 +3,13 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Commands.Update
 {
-    public class UpdateTestCommand : IRequest<UpdateTestResponseDTO>, ISecuredRequest
+    public class UpdateTestCommand : IRequest<UpdateTestResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }

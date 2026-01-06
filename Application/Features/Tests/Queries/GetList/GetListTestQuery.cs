@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Dynamic;
 using Core.Pagination;
 using Core.Pagination.Requests;
@@ -8,7 +9,7 @@ using MediatR;
 
 namespace Application.Features.Tests.Queries.GetList
 {
-    public class GetListTestQuery : IRequest<GetListTestResponseDTO>
+    public class GetListTestQuery : IRequest<GetListTestResponseDTO>, ILoggableRequest
     {
         public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Dynamic;
 using Core.Pagination;
 using Core.Pagination.Requests;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Queries.GetList
 {
-    public class GetListUserOperationClaimQuery : IRequest<GetListUserOperationClaimResponseDTO>, ISecuredRequest
+    public class GetListUserOperationClaimQuery : IRequest<GetListUserOperationClaimResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }

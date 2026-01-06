@@ -2,12 +2,13 @@
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Queries.GetUsersByOperationClaimId
 {
-    public class GetUsersByOperationClaimIdQuery : IRequest<GetUsersByOperationClaimIdResponseDTO>, ISecuredRequest
+    public class GetUsersByOperationClaimIdQuery : IRequest<GetUsersByOperationClaimIdResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int OperationClaimId { get; set; }
         public string[] Roles => [GeneralOperationClaims.Admin];

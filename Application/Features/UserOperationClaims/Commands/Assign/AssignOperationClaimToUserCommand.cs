@@ -3,12 +3,13 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.UserOperationClaims.Commands.Assign
 {
-    public class AssignOperationClaimToUserCommand : IRequest<AssignOperationClaimToUserResponseDTO>, ISecuredRequest
+    public class AssignOperationClaimToUserCommand : IRequest<AssignOperationClaimToUserResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int UserId { get; set; }
         public int OperationClaimId { get; set; }

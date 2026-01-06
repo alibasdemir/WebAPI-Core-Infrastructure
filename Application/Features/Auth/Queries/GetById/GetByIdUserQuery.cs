@@ -4,13 +4,14 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Queries.GetById
 {
-    public class GetByIdUserQuery : IRequest<GetByIdUserResponseDTO>, ISecuredRequest
+    public class GetByIdUserQuery : IRequest<GetByIdUserResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int Id { get; set; }
         public string[] Roles => [GeneralOperationClaims.Admin];

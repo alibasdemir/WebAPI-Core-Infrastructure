@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Dynamic;
 using Core.Pagination;
 using Core.Pagination.Requests;
@@ -10,7 +11,7 @@ using MediatR;
 
 namespace Application.Features.OperationClaims.Queries.GetList
 {
-    public class GetListOperationClaimQuery : IRequest<GetListOperationClaimResponseDTO>, ISecuredRequest
+    public class GetListOperationClaimQuery : IRequest<GetListOperationClaimResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }

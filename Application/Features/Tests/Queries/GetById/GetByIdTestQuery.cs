@@ -1,12 +1,13 @@
 ﻿using Application.Features.Tests.Rules;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Queries.GetById
 {
-    public class GetByIdTestQuery : IRequest<GetByIdTestResponseDTO>
+    public class GetByIdTestQuery : IRequest<GetByIdTestResponseDTO>, ILoggableRequest
     {
         public int Id { get; set; }
 

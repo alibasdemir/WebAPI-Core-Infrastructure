@@ -1,13 +1,14 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using Core.Security.HashingSalting;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.ChangePassword
 {
-    public class ChangePasswordCommand : IRequest<ChangePasswordResponseDTO>
+    public class ChangePasswordCommand : IRequest<ChangePasswordResponseDTO>, ILoggableRequest
     {
         public int UserId { get; set; }
         public string CurrentPassword { get; set; }

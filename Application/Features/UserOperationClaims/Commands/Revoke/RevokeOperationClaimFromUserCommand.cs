@@ -3,12 +3,13 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.UserOperationClaims.Commands.Revoke
 {
-    public class RevokeOperationClaimFromUserCommand : IRequest<RevokeOperationClaimFromUserResponseDTO>, ISecuredRequest
+    public class RevokeOperationClaimFromUserCommand : IRequest<RevokeOperationClaimFromUserResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int Id { get; set; }
         public string[] Roles => [GeneralOperationClaims.Admin];

@@ -3,12 +3,13 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.OperationClaims.Commands.Update
 {
-    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimResponseDTO>, ISecuredRequest
+    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }

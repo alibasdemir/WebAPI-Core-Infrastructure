@@ -1,5 +1,6 @@
 using Application.Features.Auth.Rules;
 using Application.Repositories;
+using Core.Application.Pipelines.Logging;
 using Core.Application.Services.Email;
 using Core.Application.Services.UserEmailContent;
 using Core.Security.Entities;
@@ -8,7 +9,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.ForgotPassword
 {
-    public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordResponseDTO>
+    public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordResponseDTO>, ILoggableRequest
     {
         private readonly IUserRepository _userRepository;
         private readonly AuthBusinessRules _authBusinessRules;

@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Application.Services.AuthService;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Extensions;
 using Core.Security.Entities;
 using Core.Security.JWT;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginCommand : IRequest<LoginResponseDTO>
+    public class LoginCommand : IRequest<LoginResponseDTO>, ILoggableRequest
     {
         public string Email { get; set; }
         public string Password { get; set; }

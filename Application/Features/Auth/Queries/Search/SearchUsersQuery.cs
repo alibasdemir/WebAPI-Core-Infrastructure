@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Pagination;
 using Core.Pagination.Requests;
 using Core.Security.Entities;
@@ -9,7 +10,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Queries.SearchUsers
 {
-    public class SearchUsersQuery : IRequest<SearchUsersResponseDTO>, ISecuredRequest
+    public class SearchUsersQuery : IRequest<SearchUsersResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public string? SearchTerm { get; set; }
         public PageRequest PageRequest { get; set; } = new();

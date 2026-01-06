@@ -2,12 +2,13 @@
 using Application.Repositories;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.UserOperationClaims.Commands.AssignMultiple
 {
-    public class AssignMultipleOperationClaimsToUserCommand : IRequest<AssignMultipleOperationClaimsToUserResponseDTO>, ISecuredRequest
+    public class AssignMultipleOperationClaimsToUserCommand : IRequest<AssignMultipleOperationClaimsToUserResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public int UserId { get; set; }
         public List<int> OperationClaimIds { get; set; }

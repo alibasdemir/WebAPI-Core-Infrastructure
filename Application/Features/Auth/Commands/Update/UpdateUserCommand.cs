@@ -1,12 +1,13 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.UpdateUser
 {
-    public class UpdateUserCommand : IRequest<UpdateUserResponseDTO>
+    public class UpdateUserCommand : IRequest<UpdateUserResponseDTO>, ILoggableRequest
     {
         public int Id { get; set; }
         public string UserName { get; set; }
