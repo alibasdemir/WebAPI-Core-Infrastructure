@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Pagination;
 using Core.Pagination.Requests;
 using Domain.Entities;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace Application.Features.Tests.Queries.Search
 {
-    public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>
+    public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>, ILoggableRequest
     {
         public string? SearchTerm { get; set; }
         public PageRequest PageRequest { get; set; } = new();

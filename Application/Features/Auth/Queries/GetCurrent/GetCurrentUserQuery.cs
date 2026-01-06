@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using Core.Security.Extensions;
 using MediatR;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Queries.GetCurrentUser
 {
-    public class GetCurrentUserQuery : IRequest<GetCurrentUserResponseDTO>
+    public class GetCurrentUserQuery : IRequest<GetCurrentUserResponseDTO>, ILoggableRequest
     {
         public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, GetCurrentUserResponseDTO>
         {

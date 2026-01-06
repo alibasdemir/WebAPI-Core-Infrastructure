@@ -1,15 +1,16 @@
-using Application.Repositories;
 using Application.Features.Auth.Rules;
+using Application.Repositories;
+using Core.Application.Pipelines.Logging;
 using Core.Application.Services.Email;
+using Core.Application.Services.UserEmailContent;
 using Core.Security.Entities;
 using Core.Security.HashingSalting;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Core.Application.Services.UserEmailContent;
 
 namespace Application.Features.Auth.Commands.ResetPassword
 {
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, ResetPasswordResponseDTO>
+    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, ResetPasswordResponseDTO>, ILoggableRequest
     {
         private readonly IUserRepository _userRepository;
         private readonly AuthBusinessRules _authBusinessRules;

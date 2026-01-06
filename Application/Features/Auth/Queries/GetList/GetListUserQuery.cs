@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
+using Core.Application.Pipelines.Logging;
 using Core.Pagination;
 using Core.Pagination.Requests;
 using Core.Security.Entities;
@@ -9,7 +10,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Queries.GetListUser
 {
-    public class GetListUserQuery : IRequest<GetListUserResponseDTO>, ISecuredRequest
+    public class GetListUserQuery : IRequest<GetListUserResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public PageRequest PageRequest { get; set; } = new();
         public string[] Roles => [GeneralOperationClaims.Admin];

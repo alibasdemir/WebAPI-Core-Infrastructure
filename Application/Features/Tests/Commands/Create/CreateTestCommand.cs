@@ -1,12 +1,13 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Commands.Create
 {
-    public class CreateTestCommand : IRequest<CreateTestResponseDTO>, ISecuredRequest
+    public class CreateTestCommand : IRequest<CreateTestResponseDTO>, ISecuredRequest, ILoggableRequest
     {
         public string Name { get; set; }
         public string[] Roles => ["test.create"];

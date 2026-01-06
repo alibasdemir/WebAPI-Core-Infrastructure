@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Application.Services.Email;
 using Core.Application.Services.UserEmailContent;
 using Core.Security.Entities;
@@ -10,7 +11,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest<RegisterResponseDTO>
+    public class RegisterCommand : IRequest<RegisterResponseDTO>, ILoggableRequest
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
