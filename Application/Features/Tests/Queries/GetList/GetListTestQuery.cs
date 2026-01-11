@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Core.Dynamic;
 using Core.Pagination;
@@ -9,10 +10,22 @@ using MediatR;
 
 namespace Application.Features.Tests.Queries.GetList
 {
-    public class GetListTestQuery : IRequest<GetListTestResponseDTO>, ILoggableRequest
+    public class GetListTestQuery : IRequest<GetListTestResponseDTO>, ILoggableRequest, ICachableRequest
     {
         public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }
+
+        public string CacheKey
+        {
+            get
+            {
+                var dynamicHash = CacheKeyHelper.GetDynamicQueryHash(Dynamic);
+                return $"GetListTests-Page:{PageRequest.Index}-Size:{PageRequest.Size}-Dynamic:{dynamicHash}";
+            }
+        }
+        public string CacheGroupKey => "GetTests";
+        public bool BypassCache { get; set; }
+        public TimeSpan? SlidingExpiration { get; set; }
 
         public class GetListTestQueryHandler : IRequestHandler<GetListTestQuery, GetListTestResponseDTO>
         {

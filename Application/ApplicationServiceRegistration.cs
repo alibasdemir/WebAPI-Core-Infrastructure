@@ -4,6 +4,7 @@ using Application.Features.Tests.Rules;
 using Application.Features.UserOperationClaims.Rules;
 using Application.Services.AuthService;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Validation;
 using Core.CrossCuttingConcerns.Logging.Serilog;
@@ -22,6 +23,8 @@ namespace Application
             {
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
                 config.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
+                config.AddOpenBehavior(typeof(CachingBehavior<,>));
+                config.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
                 config.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
