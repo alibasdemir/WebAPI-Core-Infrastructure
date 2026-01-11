@@ -20,6 +20,7 @@ namespace Core.DataAccess
         #region Async Methods
         public async Task AddAsync(TEntity entity)
         {
+            entity.CreatedDate = DateTime.UtcNow;
             await Context.AddAsync(entity);
             await Context.SaveChangesAsync();
         }
@@ -33,12 +34,14 @@ namespace Core.DataAccess
         public async Task SoftDeleteAsync(TEntity entity)
         {
             entity.IsDeleted = true;
+            entity.DeletedDate = DateTime.UtcNow;
             Context.Update(entity);
             await Context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TEntity entity)
         {
+            entity.UpdatedDate = DateTime.UtcNow;
             Context.Update(entity);
             await Context.SaveChangesAsync();
         }
@@ -104,6 +107,7 @@ namespace Core.DataAccess
         #region Sync Methods
         public void Add(TEntity entity)
         {
+            entity.CreatedDate = DateTime.UtcNow;
             Context.Add(entity);
             Context.SaveChanges();
         }
@@ -116,6 +120,7 @@ namespace Core.DataAccess
 
         public void SoftDelete(TEntity entity)
         {
+            entity.DeletedDate = DateTime.UtcNow;
             entity.IsDeleted = true;
             Context.Update(entity);
             Context.SaveChanges();
@@ -123,6 +128,7 @@ namespace Core.DataAccess
 
         public void Update(TEntity entity)
         {
+            entity.UpdatedDate = DateTime.UtcNow;
             Context.Update(entity);
             Context.SaveChanges();
         }

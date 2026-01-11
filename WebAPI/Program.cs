@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerWithJwtAuth(); 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddPersistenceServices();
+builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddCoreServices(builder.Configuration); 
 builder.Services.AddInfrastructureServices(builder.Configuration);
