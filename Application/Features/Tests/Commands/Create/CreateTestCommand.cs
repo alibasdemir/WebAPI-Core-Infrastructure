@@ -1,16 +1,20 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Commands.Create
 {
-    public class CreateTestCommand : IRequest<CreateTestResponseDTO>, ISecuredRequest, ILoggableRequest
+    public class CreateTestCommand : IRequest<CreateTestResponseDTO>, ISecuredRequest, ILoggableRequest, ICacheRemoverRequest
     {
         public string Name { get; set; }
         public string[] Roles => ["test.create"];
+        public bool BypassCache => false;
+        public string? CacheKey => null;
+        public string CacheGroupKey => "GetTests";
 
         public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, CreateTestResponseDTO>
         {

@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Core.Pagination;
 using Core.Pagination.Requests;
@@ -8,10 +9,20 @@ using MediatR;
 
 namespace Application.Features.Tests.Queries.Search
 {
-    public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>, ILoggableRequest
+    public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>, ILoggableRequest, ICachableRequest
     {
         public string? SearchTerm { get; set; }
         public PageRequest PageRequest { get; set; } = new();
+        public string CacheKey
+        {
+            get
+            {
+                return $"SearchTests-Term:{SearchTerm ?? "All"}-Page:{PageRequest.Index}-Size:{PageRequest.Size}";
+            }
+        }
+        public string CacheGroupKey => "GetTests";
+        public bool BypassCache { get; set; }
+        public TimeSpan? SlidingExpiration { get; set; }
 
         public class SearchTestsQueryHandler : IRequestHandler<SearchTestsQuery, SearchTestsResponseDTO>
         {
