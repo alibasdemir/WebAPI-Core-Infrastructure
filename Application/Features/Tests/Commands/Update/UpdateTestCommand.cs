@@ -5,12 +5,13 @@ using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Authorization.Constants;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
+using Core.Application.Pipelines.Performance;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Commands.Update
 {
-    public class UpdateTestCommand : IRequest<UpdateTestResponseDTO>, ISecuredRequest, ILoggableRequest, ICacheRemoverRequest
+    public class UpdateTestCommand : IRequest<UpdateTestResponseDTO>, ISecuredRequest, ILoggableRequest, ICacheRemoverRequest, IIntervalRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -18,6 +19,7 @@ namespace Application.Features.Tests.Commands.Update
         public bool BypassCache => false;
         public string? CacheKey => $"GetByIdTest-{Id}";
         public string CacheGroupKey => "GetTests";
+        public int Interval => 1000;
 
         public class UpdateTestCommandHandler : IRequestHandler<UpdateTestCommand, UpdateTestResponseDTO>
         {

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
+using Core.Application.Pipelines.Performance;
 using Core.Pagination;
 using Core.Pagination.Requests;
 using Domain.Entities;
@@ -9,7 +10,7 @@ using MediatR;
 
 namespace Application.Features.Tests.Queries.Search
 {
-    public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>, ILoggableRequest, ICachableRequest
+    public class SearchTestsQuery : IRequest<SearchTestsResponseDTO>, ILoggableRequest, ICachableRequest, IIntervalRequest
     {
         public string? SearchTerm { get; set; }
         public PageRequest PageRequest { get; set; } = new();
@@ -23,6 +24,7 @@ namespace Application.Features.Tests.Queries.Search
         public string CacheGroupKey => "GetTests";
         public bool BypassCache { get; set; }
         public TimeSpan? SlidingExpiration { get; set; }
+        public int Interval => 1500;
 
         public class SearchTestsQueryHandler : IRequestHandler<SearchTestsQuery, SearchTestsResponseDTO>
         {
