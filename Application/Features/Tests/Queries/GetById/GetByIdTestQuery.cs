@@ -3,12 +3,13 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
+using Core.Application.Pipelines.Performance;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Tests.Queries.GetById
 {
-    public class GetByIdTestQuery : IRequest<GetByIdTestResponseDTO>, ILoggableRequest, ICachableRequest
+    public class GetByIdTestQuery : IRequest<GetByIdTestResponseDTO>, ILoggableRequest, ICachableRequest, IIntervalRequest
     {
         public int Id { get; set; }
 
@@ -16,6 +17,7 @@ namespace Application.Features.Tests.Queries.GetById
         public string? CacheGroupKey => "GetTests";
         public bool BypassCache { get; set; } // default: false. dont want true cause cache will be bypassed. or can be used -> public bool BypassCache => false;
         public TimeSpan? SlidingExpiration { get; set; } // or public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(30);
+        public int Interval => 500;
 
         public class GetByIdTestQueryHandler : IRequestHandler<GetByIdTestQuery, GetByIdTestResponseDTO>
         {

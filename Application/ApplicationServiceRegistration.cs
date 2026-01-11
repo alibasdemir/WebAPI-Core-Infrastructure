@@ -6,6 +6,7 @@ using Application.Services.AuthService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
+using Core.Application.Pipelines.Performance;
 using Core.Application.Pipelines.Validation;
 using Core.CrossCuttingConcerns.Logging.Serilog;
 using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
@@ -25,6 +26,7 @@ namespace Application
                 config.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
                 config.AddOpenBehavior(typeof(CachingBehavior<,>));
                 config.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
+                config.AddOpenBehavior(typeof(PerformanceBehavior<,>));
                 config.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });

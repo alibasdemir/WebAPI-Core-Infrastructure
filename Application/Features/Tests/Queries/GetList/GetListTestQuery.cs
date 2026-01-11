@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
+using Core.Application.Pipelines.Performance;
 using Core.Dynamic;
 using Core.Pagination;
 using Core.Pagination.Requests;
@@ -10,7 +11,7 @@ using MediatR;
 
 namespace Application.Features.Tests.Queries.GetList
 {
-    public class GetListTestQuery : IRequest<GetListTestResponseDTO>, ILoggableRequest, ICachableRequest
+    public class GetListTestQuery : IRequest<GetListTestResponseDTO>, ILoggableRequest, ICachableRequest, IIntervalRequest
     {
         public PageRequest PageRequest { get; set; } = new();
         public DynamicQuery? Dynamic { get; set; }
@@ -26,6 +27,7 @@ namespace Application.Features.Tests.Queries.GetList
         public string CacheGroupKey => "GetTests";
         public bool BypassCache { get; set; }
         public TimeSpan? SlidingExpiration { get; set; }
+        public int Interval => 750;
 
         public class GetListTestQueryHandler : IRequestHandler<GetListTestQuery, GetListTestResponseDTO>
         {
